@@ -24,7 +24,7 @@ public class TrabNeuronio {
         
         Percp neuronio1 = new Percp();
         Percp neuronio2 = new Percp();
-        Percp neuronio3saSSS = new Percp();
+        Percp neuronio3 = new Percp();
         
         
         
