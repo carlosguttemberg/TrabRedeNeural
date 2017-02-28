@@ -11,7 +11,7 @@ package trabneuronio;
  */
 public class Percp {
     private int ordem;
-    private int valorCorte;
+    private double valorCorte;
 
     public int getOrdem() {
         return ordem;
@@ -21,15 +21,15 @@ public class Percp {
         this.ordem = ordem;
     }
 
-    public int getValorCorte() {
+    public double getValorCorte() {
         return valorCorte;
     }
 
-    public void setValorCorte(int valorCorte) {
+    public void setValorCorte(double valorCorte) {
         this.valorCorte = valorCorte;
     }
     
-    public void treinar(double x1, double x2, double[] w){
+    public int treinar(double x1, double x2, double[] w){
         double u=0;
         int y=0,ordem=0;
         
@@ -42,21 +42,14 @@ public class Percp {
         }else{
           y=0;
         }
-                
-        //Mostrando a aprendizagem
-        System.out.println("( "    + x1 + 
-                           "  ,"   + x2 + 
-                           ")  ="  + y  +
-                           "  w1=" + w[0] +
-                           "  w2=" + w[1] +
-                           "  w0=" + w[2]);
+        return y;
     }
     
-    private void ajustar_pesos(boolean aumentar, int ordem, double [] w){
+    public void ajustar_pesos(boolean aumentar, double [] w){
         if (aumentar){
-            w[ordem]+=this.valorCorte;
+            w[this.ordem]+=this.valorCorte;
         }else{
-            w[ordem]-=this.valorCorte;
+            w[this.ordem]-=this.valorCorte;
         }
     }
 }
