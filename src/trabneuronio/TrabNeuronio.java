@@ -18,29 +18,29 @@ public class TrabNeuronio {
         // TODO code application logic here
         
         int [][]x = {{0, 0, 1, 1},{0, 1, 0, 1}};//entrada de dados
-        double [][]w={{-0.5,0.5,-0.3},{-0.5,-0.2,0.75},{0.5,-0.2,-0.75}};//valores da função
+        double [][]w={{-0.1,0.2,-0.3},{-0.5,-0.2,0.75},{-0.5,0.2,-0.75}};//valores da função
         int [][] d= {{0, 1, 0, 0},{0, 0, 1, 0}, {0, 1, 1, 0}};//saída esperada
         int resultadoNeuronio1, resultadoNeuronio2, resultadoNeuronio3;
         boolean [] continua = {true, true, true};
         boolean [] ajustaNeuronio = {true, true, true};
-        boolean parar = true;
-        int max_int = 1000, epocas=0;
+        boolean continuar = true;
+        int max_int = 1000, epocas=0, verificaCondicao;
         
         
         Percp neuronio1 = new Percp();
-        neuronio1.setValorCorte(0.05);
+        neuronio1.setValorCorte(0.08);
         neuronio1.setOrdem(0);
         
         Percp neuronio2 = new Percp();
-        neuronio2.setValorCorte(0.07);
+        neuronio2.setValorCorte(0.08);
         neuronio2.setOrdem(0);
         
         Percp neuronio3 = new Percp();
         neuronio3.setValorCorte(0.07);
         neuronio3.setOrdem(0);
         
-        while ((epocas < max_int)&&(parar)){
-            parar=false;
+        while ((epocas < max_int)&&(continuar)){
+            continuar=false;
             
             for (int i=0;i < x[0].length;i++){
                 resultadoNeuronio1 = neuronio1.treinar(x[0][i], x[1][i], w[0]);
@@ -111,12 +111,14 @@ public class TrabNeuronio {
             
             for (int i = 0; i < ajustaNeuronio.length; i++) {
                 if(continua[i] == true){
-                    parar = true;
+                    continuar = true;
                 }
                 if(continua[i] == false){
                     ajustaNeuronio[i] = true;
                 }
             }
+            
+            
             System.out.println("_____________________________");
             epocas++;
         }
