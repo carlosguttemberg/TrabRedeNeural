@@ -20,9 +20,8 @@ public class TrabNeuronio {
         int [][]x = {{0, 0, 1, 1},{0, 1, 0, 1}};//entrada de dados
         double [][]w={{-0.1,0.2,-0.3},{-0.5,-0.2,0.75},{-0.5,0.2,-0.75}};//valores da função
         int [][] d= {{0, 1, 0, 0},{0, 0, 1, 0}, {0, 1, 1, 0}};//saída esperada
+        int [] resultadoNeu3 = {0, 0, 0, 0};   
         int resultadoNeuronio1, resultadoNeuronio2, resultadoNeuronio3;
-        boolean [] continua = {true, true, true};
-        boolean [] ajustaNeuronio = {true, true, true};
         boolean continuar = true;
         int max_int = 1000, epocas=0, verificaCondicao;
         
@@ -41,6 +40,7 @@ public class TrabNeuronio {
         
         while ((epocas < max_int)&&(continuar)){
             continuar=false;
+            verificaCondicao = 0;
             
             for (int i=0;i < x[0].length;i++){
                 resultadoNeuronio1 = neuronio1.treinar(x[0][i], x[1][i], w[0]);
@@ -56,68 +56,60 @@ public class TrabNeuronio {
                                    "  w2=" + w[2][1] +
                                    "  w0=" + w[2][2]);
                 
-                if (ajustaNeuronio[0]){
-                   if((resultadoNeuronio1==1)&&(d[0][i]==0)){
-                       neuronio1.ajustar_pesos(false,w[0]); //Deve diminuir os pesos
-                       neuronio1.setOrdem(neuronio1.getOrdem() + 1);
-                       ajustaNeuronio[0] = true;
-                       continua[0]=true;
-                   }else if ((resultadoNeuronio1==0)&&(d[0][i]==1)){
-                       neuronio1.ajustar_pesos(true,w[0]); //Deve aumentar os pesos
-                       neuronio1.setOrdem(neuronio1.getOrdem() + 1);
-                       ajustaNeuronio[0] = true;
-                       continua[0]=true;
-                   }
-                   if (neuronio1.getOrdem() >= w.length){
-                       neuronio1.setOrdem(0);
-                   }
-                }
-                
-                if (ajustaNeuronio[1]){
-                   if((resultadoNeuronio2==1)&&(d[1][i]==0)){
-                       neuronio2.ajustar_pesos(false,w[1]); //Deve diminuir os pesos
-                       neuronio2.setOrdem(neuronio2.getOrdem() + 1);
-                       continua[1]=true;
-                       ajustaNeuronio[1] = true;
-                   }else if ((resultadoNeuronio2==0)&&(d[1][i]==1)){
-                       neuronio2.ajustar_pesos(true,w[1]); //Deve aumentar os pesos
-                       neuronio2.setOrdem(neuronio2.getOrdem() + 1);
-                       continua[1]=true;
-                       ajustaNeuronio[1] = true;
-                   }
-                   if (neuronio2.getOrdem() >= w.length){
-                       neuronio2.setOrdem(0);
-                   }
-                }
-                
-                if (ajustaNeuronio[2]){
-                   if((resultadoNeuronio3==1)&&(d[2][i]==0)){
-                       neuronio3.ajustar_pesos(false,w[2]); //Deve diminuir os pesos
-                       neuronio3.setOrdem(neuronio3.getOrdem() + 1);
-                       continua[2]=true;
-                       ajustaNeuronio[2] = true;
-                   }else if ((resultadoNeuronio3==0)&&(d[2][i]==1)){
-                       neuronio3.ajustar_pesos(true,w[2]); //Deve aumentar os pesos
-                       neuronio3.setOrdem(neuronio3.getOrdem() + 1);
-                       continua[2]=true;
-                       ajustaNeuronio[2] = true;
-                   }
+                 //VERIFICAÇÃO DO NEURÔNIO 1
+                 if((resultadoNeuronio1==1)&&(d[0][i]==0)){
+                     neuronio1.ajustar_pesos(false,w[0]); //Deve diminuir os pesos
+                     neuronio1.setOrdem(neuronio1.getOrdem() + 1);
+                 }else if ((resultadoNeuronio1==0)&&(d[0][i]==1)){
+                     neuronio1.ajustar_pesos(true,w[0]); //Deve aumentar os pesos
+                     neuronio1.setOrdem(neuronio1.getOrdem() + 1);
+                 }
+                 if (neuronio1.getOrdem() >= w.length){
+                     neuronio1.setOrdem(0);
+                 }
+       
+                 //VERIFICAÇÃO DO NEURONIO 2
+                 if((resultadoNeuronio2==1)&&(d[1][i]==0)){
+                     neuronio2.ajustar_pesos(false,w[1]); //Deve diminuir os pesos
+                     neuronio2.setOrdem(neuronio2.getOrdem() + 1);
+                 }else if ((resultadoNeuronio2==0)&&(d[1][i]==1)){
+                     neuronio2.ajustar_pesos(true,w[1]); //Deve aumentar os pesos
+                     neuronio2.setOrdem(neuronio2.getOrdem() + 1);    
+                 }
+                 if (neuronio2.getOrdem() >= w.length){
+                     neuronio2.setOrdem(0);
+                 }
+               
+                 //VERIFICAÇÃO DO NEURONIO 3 RESULTADO DA XOR
+                 if((resultadoNeuronio3==1)&&(d[2][i]==0)){
+                     neuronio3.ajustar_pesos(false,w[2]); //Deve diminuir os pesos
+                     neuronio3.setOrdem(neuronio3.getOrdem() + 1);
+                 }else if ((resultadoNeuronio3==0)&&(d[2][i]==1)){
+                     neuronio3.ajustar_pesos(true,w[2]); //Deve aumentar os pesos
+                     neuronio3.setOrdem(neuronio3.getOrdem() + 1);                 
+                 }
                    
-                   if (neuronio3.getOrdem() >= w.length){
-                       neuronio3.setOrdem(0);
-                   }
+                 if (neuronio3.getOrdem() >= w.length){
+                     neuronio3.setOrdem(0);
+                 }
+                 
+                 //PREENCHENDO O VETOR DE RESULTADOS DO NEURONIO 3
+                 resultadoNeu3[i] = resultadoNeuronio3;  
+            }
+            
+            for (int i = 0; i < resultadoNeu3.length; i++) {
+                //VERIFICANDO SE TODOS OS VALORES DO RESULTADO DO NEURONIO 3 ESTA IGUAL A MATRIZ COM A SAIDA ESPERADA
+                if (resultadoNeu3[i] == d[2][i]){
+                    verificaCondicao++;
                 }
             }
             
-            for (int i = 0; i < ajustaNeuronio.length; i++) {
-                if(continua[i] == true){
-                    continuar = true;
-                }
-                if(continua[i] == false){
-                    ajustaNeuronio[i] = true;
-                }
+            //VERIFICANDO SE O LOOP DEVE CONTINUAR CASO EXISTA ALGUM VALOR QUE NÃO ESTÁ IGUAL AO DA SAIDA ESPERADA
+            if (verificaCondicao == 4){
+               continuar = false;  
+            }else{
+               continuar = true;    
             }
-            
             
             System.out.println("_____________________________");
             epocas++;
